@@ -97,30 +97,3 @@ CREATE TABLE messages_by_channel(
     id_author TEXT,
     PRIMARY KEY (id_channel, id_message, create_at)
 );
-
-/*
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('1', '1', '2022-11-23 16:15:38.336000','hola 1');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('2', '1', '2022-11-23 16:15:39.336000','hola 2');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('3', '1', '2022-11-23 16:15:40.336000','hola 3');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('4', '1', '2022-11-23 16:15:42.336000','hola 4');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('5', '2', '2022-11-23 16:15:44.336000','hola 5');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('6', '2', '2022-11-23 16:15:45.336000','hola 6');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('7', '2', '2022-11-23 16:15:46.336000','hola 7');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('8', '2', '2022-11-23 16:15:47.336000','hola 8');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('9', '2', '2022-11-23 16:15:53.336000','hola 9');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('10', '3', '2022-11-23 16:16:01.336000','hola 10');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('11', '3', '2022-11-23 16:16:12.336000','hola 11');
-INSERT INTO mensaje_id(id_mensaje, id_canal, date, contenido) VALUES ('12', '3', '2022-11-23 16:16:15.336000','hola 12');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('1', '1', '2022-11-23 16:15:38.336000','hola 1');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('2', '1', '2022-11-23 16:15:39.336000','hola 2');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('3', '1', '2022-11-23 16:15:40.336000','hola 3');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('4', '1', '2022-11-23 16:15:42.336000','hola 4');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('5', '2', '2022-11-23 16:15:44.336000','hola 5');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('6', '2', '2022-11-23 16:15:45.336000','hola 6');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('7', '2', '2022-11-23 16:15:46.336000','hola 7');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('8', '2', '2022-11-23 16:15:47.336000','hola 8');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('9', '2', '2022-11-23 16:15:53.336000','hola 9');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('10', '3', '2022-11-23 16:16:01.336000','hola 10');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('11', '3', '2022-11-23 16:16:12.336000','hola 11');
-INSERT INTO mensaje_by_canal(id_mensaje, id_canal, date, contenido) VALUES ('12', '3', '2022-11-23 16:16:15.336000','hola 12');
-*/
