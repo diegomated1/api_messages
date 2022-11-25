@@ -30,8 +30,9 @@ const get_messages_in_channel = async (req: Request, res: Response)=>{
 const create_message = async (req: Request, res: Response)=>{
     try{
         const {id_channel} = req.params;
-        const {content, id_author} = req.body;
-        const id_message = id_generator();
+        const {content} = req.body;
+        const id_author = res.locals.user.id_user;
+        const id_message = id_generator(Date.now());
         await message.insert({id_message, id_channel, create_at: Date.now(), content, id_author});
         res.status(200).json({status: 200, error: 0});
     }catch(error){
