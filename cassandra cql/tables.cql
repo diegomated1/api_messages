@@ -80,6 +80,15 @@ CREATE TABLE channels_by_users(
     PRIMARY KEY (id_channel, id_user)
 );
 
+CREATE TABLE users_channels(
+    id_channel TEXT,
+    id_user TEXT,
+    custom_username TEXT,
+    joined TIMESTAMP,
+    username TEXT,
+    PRIMARY KEY (id_user, id_channel) 
+);
+
 CREATE TABLE messages_by_id(
     id_message TEXT,
     id_channel TEXT,
