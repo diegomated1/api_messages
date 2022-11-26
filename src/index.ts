@@ -17,7 +17,9 @@ app.use(cors());
 // ROUTER
 import msg_router from './router/message.router.js';
 import user_router from './router/user.router.js';
+import channel_router from './router/channel.router.js';
 app.use('/api/user', user_router);
+app.use('/api/channel', handle_auth, channel_router);
 app.use('/api/', handle_auth, msg_router);
 
 // LISTEN
