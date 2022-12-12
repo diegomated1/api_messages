@@ -11,23 +11,15 @@ CREATE TABLE users_by_id(
     register_date TIMESTAMP,
 );
 
-CREATE TABLE users_by_email(
-    email TEXT PRIMARY KEY,
-    id_user TEXT,
-    username TEXT,
-    custom_username TEXT,
-    password TEXT,
-    register_date TIMESTAMP,
-);
+CREATE MATERIALIZED VIEW users_by_email 
+AS SELECT * FROM users_by_id
+WHERE id_user IS NOT NULL AND email IS NOT NULL
+PRIMARY KEY (email, id_user);
 
-CREATE TABLE users_by_username(
-    username TEXT PRIMARY KEY,
-    id_user TEXT,
-    custom_username TEXT,
-    email TEXT,
-    password TEXT,
-    register_date TIMESTAMP,
-);
+CREATE MATERIALIZED VIEW users_by_username
+AS SELECT * FROM users_by_id
+WHERE id_user IS NOT NULL AND username IS NOT NULL
+PRIMARY KEY (username, id_user);
 
 CREATE TABLE users_by_rols(
     id_user TEXT,
