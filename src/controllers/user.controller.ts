@@ -8,12 +8,12 @@ import id_generator from '../utils/id_generator.js';
 const get_user_by_email_username = async (req: Request, res: Response)=>{
     try{
         const {email, username} = req.query;
-        if(email){
-            var response = await userModel.find({email});
-        }else if(username){
-            var response = await userModel.find({username});
+        if(email && typeof email === "string"){
+            var response = await userModel.find_by_email(email);
+        }else if(username && typeof username === "string"){
+            var response = await userModel.find_by_username(username);
         }else{
-            return res.status(400).json({succes: false, error: 2, message: "Invalidad data form"}); 
+            return res.status(400).json({succes: false, error: 2, message: "Invalidad from data"}); 
         }
         const data = response.first();
         if(data){
@@ -29,7 +29,7 @@ const get_user_by_email_username = async (req: Request, res: Response)=>{
 const get_user_by_id = async (req: Request, res: Response)=>{
     try{
         const {id_user} = req.params;
-        const response = await userModel.find({id_user});
+        const response = await userModel.find_by_id(id_user);
         const data = response.first();
         if(data){
             res.status(200).json({succes: true, error: 0, data});
@@ -45,19 +45,20 @@ const login = async (req: Request, res: Response)=>{
     try{
         const {id_user, username, email, password} = req.body;
         if(id_user){
-            var response = await userModel.find({id_user});
+            var response = await userModel.find_by_id(id_user);
         }else if(username){
-            var response = await userModel.find({username});
+            var response = await userModel.find_by_username(username);
         }else if(email){
-            var response = await userModel.find({email});
+            var response = await userModel.find_by_email(email);
         }else{
-            return res.status(404).json({succes: false, error: 2, message: "Invalidad data form"});
+            return res.status(400).json({succes: false, error: 2, message: "Invalidad form data"});
         }
-        const data: IUsers_by_id = response.first();
+        const data = response.first();
         if(data){
             let math = await bc.compare(password, data.password);
             if(math){
-                var token = jwt.sign(data, process.env.JWT_SECRET!);
+                delete data.password;
+                var token = jwt.sign({data}, process.env.JWT_SECRET!);
                 return res.status(200).json({succes: true, error: 0, token});
             }else{
                 return res.status(401).json({succes: false, error: 3, message: "Invalid credentials"});
@@ -74,38 +75,40 @@ const register = async (req: Request, res: Response)=>{
     try{
         const {username, custom_username, email, password} = req.body;
         if(username){
-            let _data = await userModel.find({username});
-            if(_data.first()){
-                return res.status(400).json({succes: false, error: 2, message: "Username already taken"});
+            let data = await userModel.find_by_username(username);
+            if(data.first()){
+                return res.status(200).json({succes: false, error: 2, message: "Username already taken"});
             }
         }else{
-            return res.status(400).json({succes: false, error: 3, message: "incomplete data"});
+            return res.status(400).json({succes: false, error: 3, message: "Incomplete data"});
         }
         if(email){
-            let _data = await userModel.find({email});
-            if(_data.first()){
-                return res.status(400).json({succes: false, error: 2, message: "Email already taken"});
+            let data = await userModel.find_by_email(email);
+            if(data.first()){
+                return res.status(200).json({succes: false, error: 2, message: "Email already taken"});
             }
         }else{
-            return res.status(400).json({succes: false, error: 3, message: "incomplete data"});
+            return res.status(400).json({succes: false, error: 3, message: "Incomplete data"});
         }
         const date_now = Date.now();
         const password_hash = await bc.hash(password, 10);
-        const user_data = {
+        const user_data: IUsers_by_id = {
             id_user: id_generator(date_now),
             username,
             custom_username: custom_username||username,
             email,
-            register_date: date_now
+            register_date: date_now,
+            password: password_hash
         }
-        await userModel.insert({...user_data, password: password_hash});
+        console.log(user_data);
+        await userModel.insert(user_data);
+        delete user_data.password;
         const token = jwt.sign(user_data, process.env.JWT_SECRET!);
         res.status(200).json({succes: true, error: 0, token});
     }catch(error){
-        console.log(error);
         res.status(400).json({succes: false, error: 1, message: (error as Error).message});
     }
-} 
+}
 
 const auth = async (req: Request, res: Response)=>{
     try{
@@ -115,7 +118,6 @@ const auth = async (req: Request, res: Response)=>{
             res.status(401).json({succes: false, error: 0, user: "Invalid authentication"});
         }
     }catch(error){
-        console.log(error);
         res.status(400).json({succes: false, error: 1, message: (error as Error).message});
     }
 }
