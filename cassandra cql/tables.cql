@@ -46,14 +46,10 @@ CREATE TABLE channels_by_id(
     id_creator TEXT
 );
 
-CREATE TABLE channels_by_url(
-    custom_url TEXT PRIMARY KEY,
-    id_channel TEXT,
-    name TEXT,
-    create_at TIMESTAMP,
-    description TEXT,
-    id_creator TEXT
-);
+CREATE MATERIALIZED VIEW channels_by_url 
+AS SELECT * FROM channels_by_id 
+WHERE id_channel IS NOT NULL AND custom_url IS NOT NULL
+PRIMARY KEY (custom_url, id_channel);
 
 CREATE TABLE channels_by_rols(
     id_channel TEXT,
@@ -61,24 +57,6 @@ CREATE TABLE channels_by_rols(
     create_at TIMESTAMP,
     description TEXT,
     PRIMARY KEY (id_channel, id_rol)
-);
-
-CREATE TABLE channels_by_users(
-    id_channel TEXT,
-    id_user TEXT,
-    custom_username TEXT,
-    username TEXT,
-    joined TIMESTAMP,
-    PRIMARY KEY (id_channel, id_user)
-);
-
-CREATE TABLE users_channels(
-    id_channel TEXT,
-    id_user TEXT,
-    custom_username TEXT,
-    joined TIMESTAMP,
-    username TEXT,
-    PRIMARY KEY (id_user, id_channel) 
 );
 
 CREATE TABLE messages_by_id(
@@ -98,3 +76,15 @@ CREATE TABLE messages_by_channel(
     id_author TEXT,
     PRIMARY KEY (id_channel, id_message, create_at)
 );
+
+CREATE TABLE members_by_channels(
+    id_user TEXT,
+    id_channel TEXT,
+    joined TIMESTAMP,
+    PRIMARY KEY (id_channel, id_user)
+);
+
+CREATE MATERIALIZED VIEW members_by_users 
+AS SELECT * FROM members_by_channels 
+WHERE id_user IS NOT NULL AND id_channel IS NOT NULL
+PRIMARY KEY (id_user, id_channel);
