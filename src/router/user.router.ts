@@ -1,10 +1,12 @@
 import userController from "../controllers/user.controller.js";
+import channelController from "../controllers/channel.controller.js";
 import { Router } from "express";
 import { handle_auth } from "../middlewares/auth.js";
 
 const user_router = Router();
 
 user_router.route('/').get(userController.get_user_by_email_username);
+user_router.route('/channels').get(handle_auth, channelController.get_user_channels);
 user_router.route('/:id_user').get(userController.get_user_by_id);
 user_router.route('/auth').post(handle_auth, userController.auth);
 user_router.route('/auth/login').post(userController.login);
