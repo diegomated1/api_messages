@@ -58,7 +58,7 @@ const login = async (req: Request, res: Response)=>{
             let math = await bc.compare(password, data.password);
             if(math){
                 delete data.password;
-                var token = jwt.sign({data}, process.env.JWT_SECRET!);
+                var token = jwt.sign({...data}, process.env.JWT_SECRET!);
                 return res.status(200).json({succes: true, error: 0, token});
             }else{
                 return res.status(401).json({succes: false, error: 3, message: "Invalid credentials"});
@@ -103,7 +103,7 @@ const register = async (req: Request, res: Response)=>{
         console.log(user_data);
         await userModel.insert(user_data);
         delete user_data.password;
-        const token = jwt.sign(user_data, process.env.JWT_SECRET!);
+        const token = jwt.sign({...user_data}, process.env.JWT_SECRET!);
         res.status(200).json({succes: true, error: 0, token});
     }catch(error){
         res.status(400).json({succes: false, error: 1, message: (error as Error).message});
